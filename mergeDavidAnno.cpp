@@ -30,10 +30,7 @@ int main(int argc, char* argv[]) {
 		// 3. For each lines in ChipAnno's file...
 		while (inChipAnno.getline(lineChipAnno, 2047)) {
 			// 3.1 Check if gene name was NA 	
-			char lineToCheckNA[2048];
-			strcpy(lineToCheckNA, lineChipAnno);
-			// Cannot pass lineChipAnno directly because of strtok in next function
-			if (lineContainsNA(lineToCheckNA)) {
+			if (lineContainsNA(lineChipAnno)) {
 				char lineDavid[2048];
 				// 3.2 If it's NA, find corresponding field in 
 				//     David's file and print merged line
@@ -53,7 +50,10 @@ bool lineContainsNA(char* lineChipAnno) {
 	char* junk;
 	char* geneSymbol;
 
-	junk = strtok(lineChipAnno, "\t");
+	char lineToCheckNA[2048];
+	strcpy(lineToCheckNA, lineChipAnno);
+
+	junk = strtok(lineToCheckNA, "\t");
 	junk = strtok(NULL, "\t");
 	junk = strtok(NULL, "\t");
 	junk = strtok(NULL, "\t");
