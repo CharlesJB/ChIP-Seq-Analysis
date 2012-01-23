@@ -4,9 +4,6 @@
 # $2 The <basename>peaks.xls file obtained with macs
 # It extracts pertinent values and print the result
 
-echo $1
-echo $2
-
 if [ ! $# -eq 2 ]; then
         echo Invalid number of arguments
 else

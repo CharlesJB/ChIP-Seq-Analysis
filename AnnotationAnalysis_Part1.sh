@@ -11,18 +11,21 @@ else
 		basename=$2
 
 		# Annotate file
+		echo Launching annotation analysis...
 		annoFileName="${basename}_annotationAnalysis.txt"
-		Rscript peakAnno.R $fileName $annoFileName
+		Rscript ~/scripts/peakAnno.R $fileName $annoFileName # Note: Find another solution
 
 		# Generate a summary file
-		summaryFileName="${basename}_annotationSummary"
+		summaryFileName="${basename}_annotationSummary.txt"
 		macsBaseName=${fileName%.bed}
 		xlsMacs="${macsBaseName}.xls"
-		generateSummary.sh $annoFileName $xlsMacs > summaryFileName
+		echo Producing summary file: $summaryFileName
+		generateSummary.sh $annoFileName $xlsMacs > $summaryFileName
 
 		# Generate list of ESNG that ChIPpeakAnno could not annotate
 		extractFileName="${basename}_NAs.txt"
-		extractNAs.sh "${basename}_annotationSummary" > extractFileName
+		echo Saving unknown peak identification to: $extractFileName
+		extractNAs.sh $summaryFileName > $extractFileName
 	else
 		echo Invalid file name $1
 	fi

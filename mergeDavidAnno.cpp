@@ -24,6 +24,7 @@ int main(int argc, char* argv[]) {
 		char lineChipAnno[2048];
 
 		// Print header
+		//cout << "Before header..." << endl;
 		inChipAnno.getline(lineChipAnno, 2047);
 		cout << lineChipAnno << endl;
 
@@ -31,10 +32,12 @@ int main(int argc, char* argv[]) {
 		while (inChipAnno.getline(lineChipAnno, 2047)) {
 			// 3.1 Check if gene name was NA 	
 			if (lineContainsNA(lineChipAnno)) {
+				//cout << "Line contain NA" << endl;
 				char lineDavid[2048];
 				// 3.2 If it's NA, find corresponding field in 
 				//     David's file and print merged line
 				findMatchingLine(lineChipAnno, argv[2], lineDavid);
+				//cout << "Found matching line" << endl;
 				printMergedLine(lineChipAnno, lineDavid);
 			}
 			// 3.3 Else just print out the line as it is
