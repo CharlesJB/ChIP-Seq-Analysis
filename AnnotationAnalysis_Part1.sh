@@ -31,7 +31,7 @@ else
 		extractFileName="${basename}_NAs.txt"
 		echo Saving unknown peak identification to: $extractFileName
 		extractNAs.sh $summaryFileName > $extractFileName
-		echo Analyze $extractFileName with DAVID, then run AnnotationAnalysis_Part2.sh
+		echo Analyze $extractFileName with DAVID, then run mergeDavidAnno
 	else
 		echo Invalid file name $1
 	fi
