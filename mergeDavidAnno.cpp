@@ -13,7 +13,11 @@ void printMergedLine(char* lineChipAnno, char* lineDavid);
 int main(int argc, char* argv[]) {
 	// 1. Check arguments
 	if (argc != 3) {
-		cout << "Invalid number of arguments." << endl;
+		//cout << "Invalid number of arguments." << endl;
+		cout << "mergeDavidAnno usage:" << endl; 
+		cout << "mergeDavidAnno <file1> <file2>" << endl;
+		cout << "file1: Summary file obtained after running AnnotationAnalysis_part1.sh" << endl;
+		cout << "file2: File obtained after DAVID's analysis" << endl;
 		exit(1);
 	}	
 	
