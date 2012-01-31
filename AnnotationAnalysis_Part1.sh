@@ -5,7 +5,9 @@
 
 if [ ! $# -eq 2 ]; then
 	echo 'Usage:'
-	echo 'AnnotationAnalysis_Part1.sh <fileName>'
+	echo 'AnnotationAnalysis_Part1.sh <file1> <file2>'
+	echo 'file1: Case data obtained with macs'
+	echo 'file2: Control data obtained with macs'
 	echo 'Note: Script is currently working only with macs output'
 else
 	if [ -a $1 ]; then
