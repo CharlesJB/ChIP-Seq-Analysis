@@ -7,7 +7,11 @@
 # peaks overlapping case file and control file and peaks unique to control file.
 
 if [ ! $# -eq 2 ]; then
-	echo Invalid number of arguments
+	# echo Invalid number of arguments
+	echo 'Usage:'
+	echo 'splitCaseCtrl.sh <file1> <file2>'
+	echo 'file1: merged case file'
+	echo 'file2: merged control file'
 else
 	if [ -a $1 ]; then
 		if [ -a $2 ]; then
