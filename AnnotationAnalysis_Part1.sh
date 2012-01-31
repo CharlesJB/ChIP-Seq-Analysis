@@ -5,10 +5,11 @@
 
 if [ ! $# -eq 2 ]; then
 	echo 'Usage:'
-	echo 'AnnotationAnalysis_Part1.sh <file1> <file2>'
-	echo 'file1: Case data obtained with macs'
-	echo 'file2: Control data obtained with macs'
-	echo 'Note: Script is currently working only with macs output'
+	echo 'AnnotationAnalysis_Part1.sh <file> <basenames>'
+	echo 'file: bed file obtained with macs'
+	echo 'basename: prefix for the output files'
+	echo 'Note: The xls file named like the input bed file must be in the'
+	echo '      same folder as the input file for the script to work'
 else
 	if [ -a $1 ]; then
 		fileName=$1
