@@ -1,0 +1,21 @@
+This pipeline will use previously aligned data and will perform those steps:
+	1- Peak calling (default: macs)
+	2- Annotation (R's ChIPpeakAnno)
+	3- Selection of the regions in the proximal promoter
+
+To use the pipeline:
+	1- Go to the directory where you wish to store the results.
+	2- From the result directory, call the init script situated in this repository:
+		i.e.: ~/git-clones/ChIP-Seq-Analysis/init
+	3- Type "make"
+
+If you have many processors avaible, you can use the "-j" option when calling make:
+	make -j4
+
+Dependencies:
+	* Rscript (http://stat.ethz.ch/R-manual/R-patched/library/utils/html/Rscript.html)
+	* MACS (http://liulab.dfci.harvard.edu/MACS/index.html)
+	* ChIPpeakAnno (http://bioconductor.org/packages/release/bioc/html/ChIPpeakAnno.html)
+
+Note: All the programs must be installed before starting the pipeline. Your PATH environment variable 
+      should contain the path to every dependency (except for R packages).
