@@ -1,0 +1,40 @@
+SCRIPTS_DIR=__SCRIPTS_DIR__
+BASE_TREATMENT=__TREATMENT_BASE__
+BASE_CONTROL=__CONTROL_BASE__
+BASE_RESULT=$(BASE_TREATMENT)
+
+DIR_RAW_DATA=__RAW_DATA_DIR__
+DIR_TREATMENT=treatment
+DIR_CONTROL=control
+DIR_PEAK_CALLING=peaks
+DIR_ANNOTATION=annotation
+
+TREATMENT=$(DIR_TREATMENT)/$(BASE_TREATMENT).bam
+CONTROL=$(DIR_CONTROL)/$(BASE_CONTROL).bam
+
+$(shell mkdir -p $(DIR_PEAK_CALLING))
+
+# Peaks trimming
+.PHONY: all
+all: $(DIR_ANNOTATION)/$(BASE_RESULT)_withSymbol.txt
+
+$(DIR_ANNOTATION)/$(BASE_RESULT)_withSymbol.txt: $(DIR_ANNOTATION)/$(BASE_RESULT)_best.txt
+	$(SCRIPTS_DIR)/Utility/fetchSymbols.sh $<
+
+$(DIR_ANNOTATION)/$(BASE_RESULT)_best.txt: $(DIR_ANNOTATION)/$(BASE_RESULT)_annotationSummary.txt
+	$(SCRIPTS_DIR)/Utility/keepBest.py $< 20 > $@
+
+# Annotation of peaks
+$(DIR_ANNOTATION)/$(BASE_RESULT)_annotationSummary.txt: $(DIR_PEAK_CALLING)/$(BASE_RESULT)_peaks.bed
+	$(SCRIPTS_DIR)/Utility/Annotation.sh $< $(SCRIPTS_DIR)
+
+# Peak calling
+$(DIR_PEAK_CALLING)/$(BASE_RESULT)_peaks.bed: $(TREATMENT) $(CONTROL)
+	$(SCRIPTS_DIR)/Utility/launch_macs_analysis.sh $^ $(DIR_PEAK_CALLING)
+
+# Link data file in current directory 
+$(TREATMENT): ../$(DIR_RAW_DATA)/$(BASE_TREATMENT).bam
+	ln -s ../$< $(DIR_TREATMENT)/$(BASE_TREATMENT).bam
+
+$(CONTROL): ../$(DIR_RAW_DATA)/$(BASE_CONTROL).bam
+	ln -s ../$< $(DIR_CONTROL)/$(BASE_CONTROL).bam

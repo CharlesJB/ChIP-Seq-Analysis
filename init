@@ -1,0 +1,46 @@
+#!/bin/bash
+dir_scripts="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" # http://stackoverflow.com/questions/59895/can-a-bash-script-tell-what-directory-its-stored-in
+source $dir_scripts/Utility/utils.sh
+
+# A config file will is needed to tell the init script which files should be analyzed
+# and which control file should be used with wach treatment file.
+config_file=config.txt
+
+# Reset main directory's Makefile
+rm -f Makefile
+
+# Parse configuration file
+for treatment in $(cut -f1 $config_file)
+do
+	# Check if files are valid
+	control=$(grep $treatment $config_file | cut -f2 | head -n1)
+	check_file $treatment
+	check_file $control
+	base_treatment=$(basename ${treatment%.*})
+	base_control=$(basename ${control%.*})
+
+	# Build directory structure
+	dir_treatment=$base_treatment/treatment
+	dir_control=$base_treatment/control
+	mkdir -p $dir_treatment
+	mkdir -p $dir_control
+
+	# Create sub-directory's Makefile
+	raw_data_dir=$(dirname $treatment)
+	sed_script=$(echo $dir_scripts| sed 's/\//\\\//g')
+#	echo "| sed \"s/__SCRIPTS_DIR__/$sed_script/g\" \ "
+	cat $dir_scripts/Templates/Makefile_SubDirectories_Template \
+	| sed "s/__SCRIPTS_DIR__/$sed_script/g" \
+	| sed "s/__TREATMENT_BASE__/$base_treatment/g" \
+	| sed "s/__CONTROL_BASE__/$base_control/g" \
+	| sed "s/__RAW_DATA_DIR__/$raw_data_dir/g" \
+	> $base_treatment/Makefile
+# TODO: Should there be a __RAW_DATA_DIR_TREATMENT__ and a __RAW_DATA_DIR_CONTROL__?
+
+	# Add current file to main directory's Makefile
+	echo SUBDIRS+=$base_treatment  >> Makefile
+done
+
+# Complete the main makefile
+echo "" >> Makefile
+cat $dir_scripts/Templates/Makefile_MainDirectory_Template >> Makefile
