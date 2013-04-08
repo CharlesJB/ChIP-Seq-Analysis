@@ -2,6 +2,12 @@
 dir_scripts="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" # http://stackoverflow.com/questions/59895/can-a-bash-script-tell-what-directory-its-stored-in
 source $dir_scripts/Utility/utils.sh
 
+peak_caller=$1
+if [ "$peak_caller" == "" ]
+then
+	peak_caller=macs
+fi
+
 # A config file will is needed to tell the init script which files should be analyzed
 # and which control file should be used with wach treatment file.
 config_file=config.txt
@@ -29,12 +35,14 @@ do
 	raw_data_dir=$(dirname $treatment)
 	sed_script=$(echo $dir_scripts| sed 's/\//\\\//g')
 #	echo "| sed \"s/__SCRIPTS_DIR__/$sed_script/g\" \ "
-	cat $dir_scripts/Templates/Makefile_SubDirectories_Template \
-	| sed "s/__SCRIPTS_DIR__/$sed_script/g" \
-	| sed "s/__TREATMENT_BASE__/$base_treatment/g" \
-	| sed "s/__CONTROL_BASE__/$base_control/g" \
-	| sed "s/__RAW_DATA_DIR__/$raw_data_dir/g" \
-	> $base_treatment/Makefile
+	toEval="cat $dir_scripts/Templates/Makefile_SubDirectories_Template "
+	toEval+="| sed \"s/__SCRIPTS_DIR__/$sed_script/g\" "
+	toEval+="| sed \"s/__TREATMENT_BASE__/$base_treatment/g\" "
+	toEval+="| sed \"s/__CONTROL_BASE__/$base_control/g\" "
+	toEval+="| sed \"s/__RAW_DATA_DIR__/$raw_data_dir/g\" "
+	toEval+="| sed \"s/__PEAK_CALLER__/$peak_caller/g\" "
+	toEval+="> $base_treatment/Makefile"
+	eval $toEval
 # TODO: Should there be a __RAW_DATA_DIR_TREATMENT__ and a __RAW_DATA_DIR_CONTROL__?
 
 	# Add current file to main directory's Makefile

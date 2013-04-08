@@ -30,7 +30,7 @@ $(DIR_ANNOTATION)/$(BASE_RESULT)_annotationSummary.txt: $(DIR_PEAK_CALLING)/$(BA
 
 # Peak calling
 $(DIR_PEAK_CALLING)/$(BASE_RESULT)_peaks.bed: $(TREATMENT) $(CONTROL)
-	$(SCRIPTS_DIR)/Utility/launch_macs_analysis.sh $^ $(DIR_PEAK_CALLING)
+	$(SCRIPTS_DIR)/Utility/launch___PEAK_CALLER___analysis.sh $^ $(DIR_PEAK_CALLING)
 
 # Link data file in current directory 
 $(TREATMENT): ../$(DIR_RAW_DATA)/$(BASE_TREATMENT).bam
