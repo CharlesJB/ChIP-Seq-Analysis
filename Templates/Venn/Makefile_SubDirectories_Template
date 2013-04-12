@@ -4,6 +4,7 @@ BASE_TARGETS=__BASE_TARGETS__
 DIR_SCRIPTS=__DIR_SCRIPTS__
 DIR_DATA=data
 DIR_DATA_SOURCE=__DIR_DATA_SOURCE__
+DIR_UTIL_VENN=$(DIR_SCRIPTS)/Utility/Venn
 TARGETS_LISTS=$(addsuffix .txt, $(addprefix $(DIR_LISTS)/, $(DATA)))
 DATA_LIST=$(addprefix $(DIR_DATA)/, $(DATA))
 DIR_LISTS=lists
@@ -12,10 +13,10 @@ DIR_LISTS=lists
 all: $(BASE_TARGET).tiff $(TARGETS_LISTS)
 
 $(BASE_TARGET).tiff: $(BASE_TARGET).input
-	Rscript $(DIR_SCRIPTS)/Utility/VennMultiWay.R $< $@
+	Rscript $(DIR_UTIL_VENN)/VennMultiWay.R $< $@
 
 $(BASE_TARGET).input: $(DATA_LIST)
-	$(DIR_SCRIPTS)/Utility/GenerateVennInput.py $^ > $@
+	$(DIR_UTIL_VENN)/GenerateVennInput.py $^ > $@
 
 $(DIR_DATA)/%: $(DIR_DATA_SOURCE)/%
 	ln -sf ../$< $(DIR_DATA)
@@ -24,4 +25,4 @@ $(DIR_DATA)/%: $(DIR_DATA_SOURCE)/%
 $(DIR_LISTS)/%.txt: $(DATA_LIST) 
 	mkdir -p $(DIR_LISTS)
 	rm -f $(DIR_LISTS)/* # TODO: splitSymbolVenn.py should delete file if they exist already
-	$(DIR_SCRIPTS)/Utility/splitSymbolsVenn.py $(DIR_LISTS) $^
+	$(DIR_UTIL_VENN)/splitSymbolsVenn.py $(DIR_LISTS) $^
