@@ -38,7 +38,8 @@ for filename in filenames:
 # Print header
 header = ""
 for i in range(0, fileCount):
-	header += filenames[i]
+	filenameShort = filenames[i].split("/")[len(filenames[i].split("/"))-1]
+	header += filenameShort
 	if i != fileCount - 1:
 		header += "\t"
 print header
