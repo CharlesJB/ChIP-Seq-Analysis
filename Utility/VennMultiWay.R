@@ -293,7 +293,7 @@ if (length(argv) == 2) {
 } else {
 	writeLines("Usage: ")
 	writeLines("")
-	writeLines("Rscript Venn4Way.R <input> <output>")
+	writeLines("Rscript VennMultiWay.R <input> <output>")
 	writeLines("input: tab delimited file formated in limma's style with header.")
 	writeLines("       Note: max 5 columns")
 	writeLines("output: filename for the jpeg to produce")
